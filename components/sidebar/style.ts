@@ -3,11 +3,13 @@ import { NavItemProps } from './types';
 import { pxToRem } from 'helpers/styling/index';
 
 const Bar = styled.div`
-  position: fixed;
-  display: flex;
-  flex-direction: column;
+  position: sticky;
   height: 100%;
   background-color: #252d47;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
 `;
 
 const Nav = styled.nav`

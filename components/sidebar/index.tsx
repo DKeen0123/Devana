@@ -17,13 +17,6 @@ const Sidebar = () => {
     setCurrentPath(Router.pathname);
   });
 
-  const getPathData = (target: HTMLAnchorElement) =>
-    target.getAttribute('data-path');
-
-  const handleHover = (target: HTMLAnchorElement) => {
-    const path = getPathData(target);
-  };
-
   return (
     <Styles.Bar>
       <Styles.Nav>
