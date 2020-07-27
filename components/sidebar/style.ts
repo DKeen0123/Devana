@@ -9,7 +9,6 @@ const Bar = styled.div`
   z-index: 1;
   top: 0;
   left: 0;
-  overflow-x: hidden;
 `;
 
 const Nav = styled.nav`
@@ -18,8 +17,6 @@ const Nav = styled.nav`
 `;
 
 const Logo = styled.a`
-  display: flex;
-  justify-content: center;
   margin: ${pxToRem(18)} ${pxToRem(40)} 0;
   text-decoration: none;
   cursor: pointer;
@@ -47,10 +44,6 @@ const NavItem = styled(Logo)<NavItemProps>`
     outline: none;
     &:after {
       height: 60px;
-
-      @media (max-width: 700px) {
-        height: calc(100% - 30px);
-      }
     }
   }
 `;

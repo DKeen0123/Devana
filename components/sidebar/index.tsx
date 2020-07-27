@@ -5,6 +5,7 @@ import Styles from './style';
 import IconPieChart from 'components/ui/atoms/icon/IconPieChart';
 import IconAvatar from 'components/ui/atoms/icon/IconAvatar';
 import IconLogo from 'components/ui/atoms/icon/IconLogo';
+import IconCoinGraph from 'components/ui/atoms/icon/IconCoinGraph';
 
 const Sidebar = () => {
   const [currentPath, setCurrentPath] = React.useState('/');
@@ -32,6 +33,17 @@ const Sidebar = () => {
           >
             <IconPieChart
               color={currentPath === '/portfolio' ? '#7676FF' : 'white'}
+              size="md"
+            />
+          </Styles.NavItem>
+        </Link>
+        <Link href="/coin-list">
+          <Styles.NavItem
+            selected={currentPath === '/coin-list'}
+            opacity={currentPath === '/coin-list' ? 1 : 0.4}
+          >
+            <IconCoinGraph
+              color={currentPath === '/coin-list' ? '#7676FF' : 'white'}
               size="md"
             />
           </Styles.NavItem>
