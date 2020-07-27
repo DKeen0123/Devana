@@ -26,7 +26,7 @@ const TableWrapper = styled.div`
   margin: ${pxToRem(24)};
   padding: ${pxToRem(24)};
   border-radius: ${pxToRem(10)};
-  background-color: #252d47;
+  background-color: ${(props) => props.theme.colors.dark.dark};
 `;
 
 export default {

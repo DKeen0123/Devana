@@ -6,7 +6,7 @@ const Bar = styled.div`
   position: fixed;
   height: 100%;
   width: 116px;
-  background-color: #252d47;
+  background-color: ${(props) => props.theme.colors.dark.dark};
   z-index: 1;
   top: 0;
   left: 0;
@@ -29,7 +29,7 @@ const NavItem = styled(Logo)<NavItemProps>`
   position: relative;
   &:after {
     height: ${(props) => (props.selected ? pxToRem(60) : pxToRem(0))};
-    background-color: #7676ff;
+    background-color: ${(props) => props.theme.colors.brand.midlight};
     content: '';
     opacity: ${(props) => props.opacity};
     width: ${pxToRem(5)};
