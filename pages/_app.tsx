@@ -12,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <main>
         <Sidebar />
-        <Component {...pageProps} />
+        <div className="page-container">
+          <Component {...pageProps} />
+        </div>
       </main>
     </>
   );

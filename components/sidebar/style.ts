@@ -3,8 +3,9 @@ import { NavItemProps } from './types';
 import { pxToRem } from 'helpers/styling/index';
 
 const Bar = styled.div`
-  position: sticky;
+  position: fixed;
   height: 100%;
+  width: 116px;
   background-color: #252d47;
   z-index: 1;
   top: 0;

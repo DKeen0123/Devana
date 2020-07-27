@@ -2,7 +2,7 @@ import React from 'react';
 import { CoinProps, SanitizedCoinProps } from './types';
 import Styles from './style';
 import CurrencyCell from './currency-cell';
-
+import { PageSpinner } from 'components/spinner/index';
 const apiUrl =
   'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=7d';
 
@@ -12,18 +12,28 @@ const sanitizeCoins = (coins: CoinProps[]) => {
       style: 'currency',
       currency: 'USD',
     }).format(coin.current_price);
+
     const change = Number(
       coin.price_change_percentage_7d_in_currency / 100
     ).toLocaleString(undefined, {
       style: 'percent',
       minimumFractionDigits: 2,
     });
+
+    let changeColor = 'white';
+
+    if (coin.price_change_percentage_7d_in_currency < 0) {
+      changeColor = '#FF3636';
+    } else if (coin.price_change_percentage_7d_in_currency > 0) {
+      changeColor = '#13D0A7';
+    }
     return {
       name: coin.name,
       symbol: coin.symbol,
       icon: coin.image,
       currentPrice,
       change,
+      changeColor,
     };
   });
 
@@ -49,33 +59,41 @@ const Table = () => {
     doStuff();
   }, []);
 
+  if (coins.length === 0) {
+    return <PageSpinner />;
+  }
+
   return (
-    <Styles.Table>
-      <thead>
-        <tr>
-          <th>Currency</th>
-          <th>Current Price</th>
-          <th>Change (7d)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {coins.map((coin) => {
-          return (
-            <Styles.TableRow>
-              <td>
-                <CurrencyCell
-                  name={coin.name}
-                  symbol={coin.symbol}
-                  icon={coin.icon}
-                />
-              </td>
-              <td>{coin.currentPrice}</td>
-              <td>{coin.change}</td>
-            </Styles.TableRow>
-          );
-        })}
-      </tbody>
-    </Styles.Table>
+    <Styles.TableWrapper>
+      <Styles.Table>
+        <thead>
+          <tr>
+            <th>Currency</th>
+            <th>Current Price</th>
+            <th>Change (7d)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {coins.map((coin) => {
+            return (
+              <Styles.TableRow>
+                <td>
+                  <CurrencyCell
+                    name={coin.name}
+                    symbol={coin.symbol}
+                    icon={coin.icon}
+                  />
+                </td>
+                <td>{coin.currentPrice}</td>
+                <Styles.PercentageTd color={coin.changeColor}>
+                  {coin.change}
+                </Styles.PercentageTd>
+              </Styles.TableRow>
+            );
+          })}
+        </tbody>
+      </Styles.Table>
+    </Styles.TableWrapper>
   );
 };
 

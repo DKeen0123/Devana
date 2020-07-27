@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { pxToRem } from 'helpers/styling';
 
 const Table = styled.table`
   width: 100%;
@@ -15,11 +16,22 @@ const Table = styled.table`
   }
 `;
 
-const TableRow = styled.tr`
-  /* border-bottom: 1px white solid; */
+const TableRow = styled.tr``;
+
+const PercentageTd = styled.td<{ color: string }>`
+  color: ${(props) => props.color};
+`;
+
+const TableWrapper = styled.div`
+  margin: ${pxToRem(24)};
+  padding: ${pxToRem(24)};
+  border-radius: ${pxToRem(10)};
+  background-color: #252d47;
 `;
 
 export default {
+  PercentageTd,
   Table,
   TableRow,
+  TableWrapper,
 };
