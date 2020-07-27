@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { NavItemProps } from './types';
+import { pxToRem } from 'helpers/styling/index';
 
 const Bar = styled.div`
   position: fixed;
@@ -17,13 +18,39 @@ const Nav = styled.nav`
 const Logo = styled.a`
   display: flex;
   justify-content: center;
-  margin: 18px 40px 0;
+  margin: ${pxToRem(18)} ${pxToRem(40)} 0;
   text-decoration: none;
   cursor: pointer;
 `;
 
 const NavItem = styled(Logo)<NavItemProps>`
-  margin: 50px 40px 0;
+  margin: ${pxToRem(50)} 0 0 0;
+  padding: 0px ${pxToRem(40)};
+  position: relative;
+  &:after {
+    height: ${(props) => (props.selected ? pxToRem(60) : pxToRem(0))};
+    background-color: #7676ff;
+    content: '';
+    opacity: ${(props) => props.opacity};
+    width: ${pxToRem(5)};
+    position: absolute;
+    transition: height 0.4s;
+    transition-timing-function: cubic-bezier(1, -0.65, 0, 2.31);
+    left: 0%;
+    top: ${pxToRem(-12)};
+  }
+
+  &:hover,
+  &:focus {
+    outline: none;
+    &:after {
+      height: 60px;
+
+      @media (max-width: 700px) {
+        height: calc(100% - 30px);
+      }
+    }
+  }
 `;
 
 export default {
