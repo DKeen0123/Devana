@@ -1,6 +1,7 @@
 import React from 'react';
 import Document, { Head, Main, NextScript, Html } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+import { mediaStyles } from 'helpers/media';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -29,7 +30,12 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <style
+            type="text/css"
+            dangerouslySetInnerHTML={{ __html: mediaStyles }}
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
