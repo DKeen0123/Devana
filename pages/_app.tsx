@@ -33,6 +33,14 @@ const GlobalStyle = createGlobalStyle`
   #__next {
     height: 100%;
   }
+
+  .no-opacity {
+    opacity: 0;
+  }
+
+  .full-opacity {
+    opacity: 1;
+  }
 `;
 
 const theme = createThemeProvider('brand');

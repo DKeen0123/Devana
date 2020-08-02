@@ -1,49 +1,160 @@
 import React from 'react';
+import * as d3 from 'd3';
 import Styles from './style';
+import { SparklineProps, SparklineDataItem } from './types';
+import { formatCurrency } from 'helpers/currency';
 
-const LinearGradientFill = () => {
+// const LinearGradientFill = () => {
+//   return (
+//     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+//       <stop offset="0%" stopColor="#Cc824d" stopOpacity="1" />
+//       <stop offset="100%" stopColor="#D37417" stopOpacity="1" />
+//     </linearGradient>
+//   );
+// };
+
+const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
+  const [areaPath, setAreaPath] = React.useState('');
+  const [linePath, setLinePath] = React.useState('');
+  const [textContent, setTextContent] = React.useState('');
+  const circle = React.useRef<SVGCircleElement>(null);
+  const circleText = React.useRef<SVGTextElement>(null);
+  const rectRef = React.useRef<SVGRectElement>(null);
+  const bisect = d3.bisector(function (d: SparklineDataItem) {
+    return d.date;
+  }).left;
+
+  const scales = () => {
+    // 1. map date to x-position
+    // get min and max of date
+    const extent = d3.extent(data, (d) => d.date) as [Date, Date];
+    const xScale = d3.scaleTime().domain(extent).range([0, width]);
+
+    // 2. map value to y-position
+    // get min/max of value
+    const [min, max] = d3.extent(data, (d) => d.value) as [number, number];
+    const yScale = d3.scaleLinear().domain([min, max]).range([height, 25]);
+    return {
+      xScale,
+      yScale,
+    };
+  };
+
+  const createChart = () => {
+    const curve = d3.curveBasis;
+    const { xScale, yScale } = scales();
+
+    const getX = (d: { date: Date; value: number }) => {
+      return xScale(d.date);
+    };
+    const getY = (d: { date: Date; value: number }) => {
+      return yScale(d.value);
+    };
+    const area = d3
+      .area()
+      .curve(curve)
+      .x((d) => getX(d))
+      .y1((d) => getY(d))
+      .y0(height);
+
+    const line = d3
+      .line()
+      .curve(curve)
+      .x((d) => getX(d))
+      .y((d) => getY(d));
+
+    setAreaPath(area(data));
+    setLinePath(line(data));
+  };
+
+  React.useEffect(() => {
+    createChart();
+  }, [data]);
+
+  const rectToDoEvents = d3.select(rectRef.current);
+
+  rectToDoEvents.on('mouseover', () => {
+    circle && circle.current && circle.current.setAttribute('opacity', '1');
+    circleText &&
+      circleText.current &&
+      circleText.current.setAttribute('opacity', '1');
+  });
+
+  rectToDoEvents.on('mouseout', () => {
+    circle && circle.current && circle.current.setAttribute('opacity', '0');
+    circleText &&
+      circleText.current &&
+      circleText.current.setAttribute('opacity', '0');
+  });
+
+  rectToDoEvents.on('mousemove', () => {
+    const rect = rectRef && rectRef.current;
+    const { xScale, yScale } = scales();
+    if (xScale != null && rect != null && xScale != null && yScale != null) {
+      const x0 = xScale.invert(d3.mouse(rect)[0]);
+      const i = bisect(data, x0, 1);
+      const selectedData = data[i];
+      circle &&
+        circle.current &&
+        circle.current.setAttribute('cx', xScale(selectedData.date));
+      circle &&
+        circle.current &&
+        circle.current.setAttribute('cy', yScale(selectedData.value));
+      const text = `${formatCurrency(selectedData.value)}`;
+      setTextContent(text);
+      let textXOffset = 0;
+      if (xScale(selectedData.date) > width / 2) {
+        textXOffset = text.length >= 7 ? 60 : 30;
+      }
+      circleText &&
+        circleText.current &&
+        circleText.current.setAttribute(
+          'x',
+          xScale(selectedData.date) - textXOffset
+        );
+      circleText &&
+        circleText.current &&
+        circleText.current.setAttribute('y', yScale(selectedData.value) - 20);
+    }
+  });
   return (
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stopColor="#Cc824d" stopOpacity="1" />
-      <stop offset="100%" stopColor="#D37417" stopOpacity="1" />
-    </linearGradient>
+    <Styles.Wrapper>
+      <svg width={width} height={height} fill="orange">
+        <path d={areaPath} fill="orange" stroke="none" />
+        <path d={linePath} fill="none" stroke="yellow" strokeWidth="4" />
+        <g>
+          <circle
+            ref={circle}
+            fill="yellow"
+            strokeWidth="4"
+            stroke="white"
+            r={8.5}
+            opacity={0}
+          />
+        </g>
+        <g>
+          <text
+            id="svg-text"
+            ref={circleText}
+            opacity={0}
+            textAnchor="left"
+            alignmentBaseline="middle"
+            fill="white"
+            fontSize="10"
+          >
+            {textContent}
+          </text>
+        </g>
+        <rect
+          ref={rectRef}
+          fill="none"
+          pointerEvents="all"
+          width={width}
+          height={height}
+        />
+      </svg>
+    </Styles.Wrapper>
   );
 };
-
-// lineChartData = {
-//   const xExtent = d3.extent(data, d => d.date);
-//   const yExtent = d3.extent(data, d => d.high);
-//   const xScale = d3.scaleTime().domain(xExtent).range([0, width]);
-//   const yScale = d3.scaleLinear().domain(yExtent).range([height, 0]);
-//   const getX = (d) => {
-//      return xScale(d.date);
-//   };
-//   const getY = (d) => {
-//     return yScale(d.high);
-//   };
-//   const line = d3.line().x((d) => getX(d)).y((d) => getY(d));
-//   // ...
-//   return [{path: line(data), fill: 'red'}]
-// }
-
-const SparkLineGraph: React.FC<{ data: number[] }> = ({ data }) => (
-  <Styles.Wrapper>
-    <Sparklines data={data}>
-      <svg>
-        <defs>
-          <LinearGradientFill />
-        </defs>
-      </svg>
-      <SparklinesLine
-        style={{
-          strokeWidth: 1,
-          fill: 'url(#gradient)',
-          fillOpacity: 0.8,
-        }}
-        color="#Cc824d"
-      />
-    </Sparklines>
-  </Styles.Wrapper>
-);
 
 export default SparkLineGraph;

@@ -10,3 +10,8 @@ export const H1 = styled.h1`
   color: white;
   font-size: ${pxToRem(48)};
 `;
+
+export const H3 = styled.h3`
+  color: white;
+  font-size: ${pxToRem(24)};
+`;
