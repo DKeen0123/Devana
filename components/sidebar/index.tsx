@@ -24,7 +24,7 @@ const Sidebar = () => {
       <Styles.Nav>
         <Link href="/">
           <Styles.Logo>
-            <IconLogo />
+            <IconLogo size="lg" />
           </Styles.Logo>
         </Link>
         <Link href="/portfolio">

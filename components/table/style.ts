@@ -16,7 +16,13 @@ const Table = styled.table`
   }
 `;
 
-const TableRow = styled.tr``;
+const TableRow = styled.tr`
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.dark.middark};
+  }
+`;
 
 const PercentageTd = styled.td<{ color: string }>`
   color: ${(props) => props.color};

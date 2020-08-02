@@ -32,4 +32,5 @@ export interface SanitizedCoinProps {
   currentPrice: number;
   change: number;
   changeColor: string;
+  id: string;
 }

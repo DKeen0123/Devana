@@ -3,6 +3,8 @@ import { CoinProps, SanitizedCoinProps } from './types';
 import Styles from './style';
 import CurrencyCell from './currency-cell';
 import { PageSpinner } from 'components/spinner/index';
+import Link from 'next/link';
+
 const apiUrl =
   'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=7d';
 
@@ -34,6 +36,7 @@ const sanitizeCoins = (coins: CoinProps[]) => {
       currentPrice,
       change,
       changeColor,
+      id: coin.id,
     };
   });
 
@@ -76,19 +79,21 @@ const Table = () => {
         <tbody>
           {coins.map((coin) => {
             return (
-              <Styles.TableRow>
-                <td>
-                  <CurrencyCell
-                    name={coin.name}
-                    symbol={coin.symbol}
-                    icon={coin.icon}
-                  />
-                </td>
-                <td>{coin.currentPrice}</td>
-                <Styles.PercentageTd color={coin.changeColor}>
-                  {coin.change}
-                </Styles.PercentageTd>
-              </Styles.TableRow>
+              <Link href={`/currencies/${coin.id}`}>
+                <Styles.TableRow>
+                  <td>
+                    <CurrencyCell
+                      name={coin.name}
+                      symbol={coin.symbol}
+                      icon={coin.icon}
+                    />
+                  </td>
+                  <td>{coin.currentPrice}</td>
+                  <Styles.PercentageTd color={coin.changeColor}>
+                    {coin.change}
+                  </Styles.PercentageTd>
+                </Styles.TableRow>
+              </Link>
             );
           })}
         </tbody>
