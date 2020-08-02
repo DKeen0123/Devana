@@ -69,7 +69,25 @@ const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
 
   React.useEffect(() => {
     createChart();
-  }, [data]);
+    let line = d3.selectAll('#line');
+    const totalLength = line != null && line.node().getTotalLength();
+
+    line
+      .attr('stroke-dasharray', totalLength)
+      .attr('stroke-dashoffset', totalLength)
+      .attr('stroke-width', 4)
+      .attr('stroke', 'yellow')
+      .transition()
+      .duration(3000)
+      .attr('stroke-dashoffset', 0);
+
+    const area = d3.selectAll('#area');
+    area
+      .attr('transform', 'translate(0, 300)')
+      .transition()
+      .duration(3000)
+      .attr('transform', 'translate(0,0)');
+  }, [data, linePath, areaPath]);
 
   const rectToDoEvents = d3.select(rectRef.current);
 
@@ -120,8 +138,14 @@ const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
   return (
     <Styles.Wrapper>
       <svg width={width} height={height} fill="orange">
-        <path d={areaPath} fill="orange" stroke="none" />
-        <path d={linePath} fill="none" stroke="yellow" strokeWidth="4" />
+        <path id="area" d={areaPath} fill="orange" stroke="none" />
+        <path
+          id="line"
+          d={linePath}
+          fill="none"
+          stroke="yellow"
+          strokeWidth="4"
+        />
         <g>
           <circle
             ref={circle}
