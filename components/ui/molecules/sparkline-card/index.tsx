@@ -10,18 +10,22 @@ const SparklineCard: React.FC<SparklineCardProps> = ({
   width,
   height,
   currentPrice,
+  imageUrl,
 }) => (
   <Styles.CardWrapper width={width}>
     <Card>
-      <Styles.PriceWrapper>
-        <H3>Current price</H3>
-        <Text>
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          }).format(currentPrice)}
-        </Text>
-      </Styles.PriceWrapper>
+      <Styles.HeadingWrapper>
+        <img src={imageUrl} />
+        <Styles.PriceWrapper>
+          <H3>Current price</H3>
+          <Text>
+            {new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            }).format(currentPrice)}
+          </Text>
+        </Styles.PriceWrapper>
+      </Styles.HeadingWrapper>
       <SparkLineGraph data={data} width={width} height={height} />
     </Card>
   </Styles.CardWrapper>

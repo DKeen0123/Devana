@@ -7,11 +7,17 @@
     "build": "next build",
     "start": "next start"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit"
+    }
+  },
   "dependencies": {
     "@artsy/fresnel": "^1.2.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "d3": "^5.16.0",
     "frappe-charts": "^1.5.2",
+    "husky": "^4.2.5",
     "next": "9.4.4",
     "react": "16.13.1",
     "react-color-extractor": "^1.1.2",

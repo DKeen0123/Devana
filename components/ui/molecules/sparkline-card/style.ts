@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 import { pxToRem } from 'helpers/styling';
 
+const HeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: ${pxToRem(24)} ${pxToRem(16)} 0;
+`;
+
 const PriceWrapper = styled.div`
-  padding: ${pxToRem(24)} ${pxToRem(24)} 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-left: ${pxToRem(8)};
 `;
 
 const CardWrapper = styled.div<{ width: number }>`
@@ -19,5 +25,6 @@ const CardWrapper = styled.div<{ width: number }>`
 
 export default {
   CardWrapper,
+  HeadingWrapper,
   PriceWrapper,
 };
