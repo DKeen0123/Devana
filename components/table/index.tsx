@@ -56,6 +56,7 @@ const Table = () => {
     const doStuff = async () => {
       const coins: CoinProps[] = await getData();
       const sanitizedCoins = sanitizeCoins(coins);
+      // @ts-ignore
       setCoins(sanitizedCoins);
     };
 
@@ -77,25 +78,28 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {coins.map((coin) => {
-            return (
-              <Link href={`/currencies/${coin.id}`}>
-                <Styles.TableRow>
-                  <td>
-                    <CurrencyCell
-                      name={coin.name}
-                      symbol={coin.symbol}
-                      icon={coin.icon}
-                    />
-                  </td>
-                  <td>{coin.currentPrice}</td>
-                  <Styles.PercentageTd color={coin.changeColor}>
-                    {coin.change}
-                  </Styles.PercentageTd>
-                </Styles.TableRow>
-              </Link>
-            );
-          })}
+          {
+            // @ts-ignore
+            coins.map((coin) => {
+              return (
+                <Link href={`/currencies/${coin.id}`}>
+                  <Styles.TableRow>
+                    <td>
+                      <CurrencyCell
+                        name={coin.name}
+                        symbol={coin.symbol}
+                        icon={coin.icon}
+                      />
+                    </td>
+                    <td>{coin.currentPrice}</td>
+                    <Styles.PercentageTd color={coin.changeColor}>
+                      {coin.change}
+                    </Styles.PercentageTd>
+                  </Styles.TableRow>
+                </Link>
+              );
+            })
+          }
         </tbody>
       </Styles.Table>
     </Styles.TableWrapper>

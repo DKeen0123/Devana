@@ -55,23 +55,30 @@ const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
     const area = d3
       .area()
       .curve(curve)
+      // @ts-ignore
       .x((d) => getX(d))
+      // @ts-ignore
       .y1((d) => getY(d))
       .y0(height);
 
     const line = d3
       .line()
       .curve(curve)
+      // @ts-ignore
       .x((d) => getX(d))
+      // @ts-ignore
       .y((d) => getY(d));
 
+    // @ts-ignore
     setAreaPath(area(data));
+    // @ts-ignore
     setLinePath(line(data));
   };
 
   React.useEffect(() => {
     createChart();
     let line = d3.selectAll('#line');
+    // @ts-ignore
     const totalLength = line != null && line.node().getTotalLength();
 
     line
@@ -116,9 +123,11 @@ const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
       const selectedData = data[i];
       circle &&
         circle.current &&
+        // @ts-ignore
         circle.current.setAttribute('cx', xScale(selectedData.date));
       circle &&
         circle.current &&
+        // @ts-ignore
         circle.current.setAttribute('cy', yScale(selectedData.value));
       const text = `${formatCurrency(selectedData.value)}`;
       setTextContent(text);

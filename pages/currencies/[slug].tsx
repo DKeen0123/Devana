@@ -17,13 +17,19 @@ export interface ApiResponse {
   prices: [number[]];
 }
 
+export interface CoinApiResponse {
+  image?: {
+    thumb: string;
+  };
+}
+
 export default function Currencies() {
   const [chartData, setChartData] = React.useState<
     | SparklineDataItem[]
     | []
     | Promise<({ date: Date; value: number } | undefined)[]>
   >([]);
-  const [coinData, setCoinData] = React.useState({});
+  const [coinData, setCoinData] = React.useState<CoinApiResponse>({});
 
   const width = 300;
   const height = 160;
@@ -52,12 +58,14 @@ export default function Currencies() {
 
   const getChartData = async (url: string) => {
     const data: ApiResponse = await makeApiRequest(url);
+    // @ts-ignore
     setChartData(formatData(data));
   };
 
   const getCoinData = async (url: string) => {
     const data: ApiResponse = await makeApiRequest(url);
     console.log('data', data);
+    // @ts-ignore
     setCoinData(data);
   };
 
@@ -73,9 +81,11 @@ export default function Currencies() {
   return (
     <Grid>
       {process.browser && <H1>{Router.query.slug}</H1>}
-      {/* <img src={coinData.image.thumb || ''} /> */}
       {coinData.image && coinData.image.thumb && (
-        <Palette imgSrc={`${coinData.image.thumb}`} />
+        <>
+          <img src={coinData.image.thumb} />
+          <Palette imgSrc={`${coinData.image.thumb}`} />
+        </>
       )}
       {Array.isArray(chartData) && chartData.length > 0 ? (
         <SparklineCard
