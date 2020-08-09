@@ -5,6 +5,6 @@ export interface CardWrapperProps {
   backgroundTone: Tone;
 }
 
-export interface CardProps {
+export interface CardProps extends CardWrapperProps {
   children: JSX.Element | JSX.Element[];
 }

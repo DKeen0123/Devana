@@ -4,14 +4,16 @@ import Styles from './style';
 import { SparklineProps, SparklineDataItem } from './types';
 import { formatCurrency } from 'helpers/currency';
 
-// const LinearGradientFill = () => {
-//   return (
-//     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-//       <stop offset="0%" stopColor="#Cc824d" stopOpacity="1" />
-//       <stop offset="100%" stopColor="#D37417" stopOpacity="1" />
-//     </linearGradient>
-//   );
-// };
+const LinearGradientFill = () => {
+  return (
+    <svg height="0" width="0">
+      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#Cc824d" stopOpacity="1" />
+        <stop offset="100%" stopColor="#D37417" stopOpacity="1" />
+      </linearGradient>
+    </svg>
+  );
+};
 
 const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
   const [areaPath, setAreaPath] = React.useState('');
@@ -128,24 +130,22 @@ const SparkLineGraph: React.FC<SparklineProps> = ({ data, width, height }) => {
         circleText.current &&
         circleText.current.setAttribute(
           'x',
-          xScale(selectedData.date) - textXOffset
+          (xScale(selectedData.date) - textXOffset).toString()
         );
       circleText &&
         circleText.current &&
-        circleText.current.setAttribute('y', yScale(selectedData.value) - 20);
+        circleText.current.setAttribute(
+          'y',
+          (yScale(selectedData.value) - 20).toString()
+        );
     }
   });
   return (
     <Styles.Wrapper>
-      <svg width={width} height={height} fill="orange">
-        <path id="area" d={areaPath} fill="orange" stroke="none" />
-        <path
-          id="line"
-          d={linePath}
-          fill="none"
-          stroke="yellow"
-          strokeWidth="4"
-        />
+      <LinearGradientFill />
+      <svg width={width} height={height} fill="yellow">
+        <path id="area" d={areaPath} fill="url(#gradient)" stroke="none" />
+        <path id="line" d={linePath} fill="none" />
         <g>
           <circle
             ref={circle}
